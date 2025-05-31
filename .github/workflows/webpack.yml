@@ -1,7 +1,7 @@
 name: Build Script
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
 
 jobs:
   build:
@@ -34,3 +34,23 @@ jobs:
         asset_content_type: text/javascript
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
+
+
+      - name: Find Extension File
+        id: find_extension
+        run: |
+          if [ -f "./dist/extension.js" ]; then
+            echo "file_path=./dist/extension.js" >> $GITHUB_OUTPUT
+          elif [ -f "./extension.js" ]; then
+            echo "file_path=./extension.js" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Could not find extension.js file"
+            exit 1
+          fi
+
+      - name: Upload Extension.js to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ steps.find_extension.outputs.file_path }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }
