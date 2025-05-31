@@ -12,29 +12,17 @@ jobs:
         node-version: [18.x]
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Build Script
-      run: |
-        npm install
-        npx webpack
-
-
-    - name: Upload Script
-      uses: actions/upload-release-asset@v1.0.2
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./dist/extension.js
-        asset_name: extension.js
-        asset_content_type: text/javascript
-      env:
-        GITHUB_TOKEN: ${{ secrets.TOKEN }}
-
+      - name: Build Script
+        run: |
+          npm install
+          npx webpack
 
       - name: Find Extension File
         id: find_extension
@@ -53,4 +41,4 @@ jobs:
         with:
           files: ${{ steps.find_extension.outputs.file_path }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
