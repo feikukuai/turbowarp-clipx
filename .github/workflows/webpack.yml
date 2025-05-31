@@ -32,7 +32,7 @@ jobs:
           elif [ -f "./extension.js" ]; then
             echo "file_path=./extension.js" >> $GITHUB_OUTPUT
           else
-            echo "❌ Could not find extension.js file"
+            echo "❌ Culd not find extension.js file"
             exit 1
           fi
 
