@@ -1,25 +1,25 @@
 import Extension from './include/plugin'
 
 new Extension({
-    id: "MovementExtension",
-    name: "移动控制",
-    color1: "#00aa00",  // 使用绿色表示移动相关
+    id: "ExampleExtension",
+    name: "example",
+    color1: "#0800ff",
     blocks: [
         {
-            opcode: 'moveForward',
+            opcode: 'output',
             blockType: 'command',
-            text: '向前移动 [steps:number] 步',
-            default: { steps: 10 },
-            bind: function({ steps }, util) {
-                const target = util.target;
-                // 计算移动方向(Scratch中0°朝上)
-                const radians = Math.PI * target.direction / 180;
-                // 更新角色位置
-                target.setXY(
-                    target.x + steps * Math.sin(radians),
-                    target.y + steps * Math.cos(radians)
-                );
-            }
-        }
+            text: '命令 [block:string] [type:string]',
+            default: { block : "参数2", type: "类型" },
+            menu: { block : [ "参数1", "参数2" ] },
+            bind: function({ block, type }) {
+                return `内容 ${block} 类型 ${type}`;
+            },
+        }, {
+            opcode: 'list',
+            blockType: 'reporter',
+            text: '获取一个空列表',
+            bind: () => [],
+            disableMonitor: true,
+        },
     ]
 }).register();
