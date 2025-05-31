@@ -6,18 +6,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x]
-
     steps:
       - uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18
 
       - name: Build Script
         run: |
@@ -32,13 +27,14 @@ jobs:
           elif [ -f "./extension.js" ]; then
             echo "file_path=./extension.js" >> $GITHUB_OUTPUT
           else
-            echo "❌ Culd not find extension.js file"
+            echo "❌ Could not find extension.js file"
             exit 1
           fi
 
-      - name: Upload Extension.js to Release
-        uses: softprops/action-gh-release@v1
+      - name: Create or Update Release and Upload Asset
+        uses: ncipollo/release-action@v1
         with:
-          files: ${{ steps.find_extension.outputs.file_path }}
+          artifacts: ${{ steps.find_extension.outputs.file_path }}
+          tag: latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
