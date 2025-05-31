@@ -1,18 +1,16 @@
 import Extension from './include/plugin';
 
 new Extension({
-    id: "MoveExtension",
-    name: "move",
-    color1: "#00bfff",
+    id: "HideExtension",
+    name: "hide",
+    color1: "#888888",
     blocks: [
         {
-            opcode: 'move10',
+            opcode: 'hideSprite',
             blockType: 'command',
-            text: '移动10步',
+            text: '隐藏角色',
             bind: (args, util) => {
-                const rad = util.target.direction * Math.PI / 180;
-                util.target.x += 10 * Math.cos(rad);
-                util.target.y += 10 * Math.sin(rad);
+                util.target.visible = false;
             },
         }
     ]
