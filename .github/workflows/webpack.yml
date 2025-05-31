@@ -31,18 +31,17 @@ jobs:
             exit 1
           fi
 
-      # 新增：上传构建产物为 Artifact
       - name: 上传构建产物 (extension.js)
         uses: actions/upload-artifact@v4
         with:
           name: extension.js
           path: ${{ steps.find_extension.outputs.file_path }}
 
-      # 保持 Release 步骤不变（可选）
       - name: Create or Update Release and Upload Asset
         uses: ncipollo/release-action@v1
         with:
           artifacts: ${{ steps.find_extension.outputs.file_path }}
           tag: latest
+          allowUpdates: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
